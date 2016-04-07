@@ -1,5 +1,7 @@
 package com.sam_chordas.android.stockhawk.service;
 
+import android.content.ContentProvider;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
@@ -7,6 +9,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -121,8 +125,12 @@ public class StockTaskService extends GcmTaskService{
             mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                 null, null);
           }
-          mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
+          ContentProviderResult[] results = mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
               Utils.quoteJsonToContentVals(getResponse));
+          if(results.length == 0)
+          {
+            Toast.makeText(mContext,"No quote matching " + params.getExtras().getString("symbol"),Toast.LENGTH_SHORT).show(); //not having any effect
+          }
         }catch (RemoteException | OperationApplicationException e){
           Log.e(LOG_TAG, "Error applying batch insert", e);
         }
