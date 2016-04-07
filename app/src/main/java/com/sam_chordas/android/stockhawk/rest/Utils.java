@@ -1,6 +1,9 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -76,7 +79,7 @@ public class Utils {
 
   public static ContentProviderOperation buildBatchOperation(JSONObject jsonObject){
     ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
-        QuoteProvider.Quotes.CONTENT_URI);
+            QuoteProvider.Quotes.CONTENT_URI);
     try {
       String change = jsonObject.getString("Change");
       builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
@@ -99,5 +102,12 @@ public class Utils {
       e.printStackTrace();
     }
     return builder.build();
+  }
+
+  public static boolean isNetworkAvailable(Context c) {
+    ConnectivityManager connectivityManager
+            = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
   }
 }

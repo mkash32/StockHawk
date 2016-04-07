@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.sam_chordas.android.stockhawk.R;
@@ -52,6 +53,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
+  private TextView errorTV;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +61,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mContext = this;
     ConnectivityManager cm =
         (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-
     NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-    isConnected = activeNetwork != null &&
-        activeNetwork.isConnectedOrConnecting();
+    isConnected = Utils.isNetworkAvailable(this);
     setContentView(R.layout.activity_my_stocks);
+    errorTV = (TextView) findViewById(R.id.tv_error);
+
     // The intent service is for executing immediate pulls from the Yahoo API
     // GCMTaskService can only schedule tasks, they cannot execute immediately
     mServiceIntent = new Intent(this, StockIntentService.class);
@@ -71,8 +73,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       // Run the initialize task service so that some stocks appear upon an empty database
       mServiceIntent.putExtra("tag", "init");
       if (isConnected){
+        errorTV.setVisibility(View.GONE);
         startService(mServiceIntent);
       } else{
+        errorTV.setVisibility(View.VISIBLE);
         networkToast();
       }
     }
