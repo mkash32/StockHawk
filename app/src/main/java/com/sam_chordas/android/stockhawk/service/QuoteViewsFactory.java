@@ -82,7 +82,7 @@ public class QuoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
 
         final Intent fillInIntent = new Intent();
         fillInIntent.putExtra("symbol", cursor.getString(cursor.getColumnIndex("symbol")));
-        views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
+        views.setOnClickFillInIntent(R.id.list_item, fillInIntent);
         return views;
     }
 

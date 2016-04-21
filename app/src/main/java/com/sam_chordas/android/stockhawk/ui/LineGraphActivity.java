@@ -4,6 +4,7 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -78,7 +79,8 @@ public class LineGraphActivity extends AppCompatActivity implements
 
         lineSet.setColor(getResources().getColor(R.color.line_set_color))
                 .setDotsStrokeColor(getResources().getColor(R.color.line_color))
-                .setDotsColor(getResources().getColor(R.color.dot_color))
+                .setDotsColor(Color.WHITE)
+                .setDotsRadius(10)
                 .setDotsStrokeThickness(dpToPx(2));
     }
 
