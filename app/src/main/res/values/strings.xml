@@ -10,9 +10,11 @@
     <string name="action_change_units">Change Units</string>
     <string name="symbol_search">Symbol Search</string>
     <string name="content_test">Search for a Stock Symbol</string>
+    <string name="already_saved">This stock is already saved!</string>
     <string name="input_hint" translatable="false">FB</string>
     <string name="input_prefill"></string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+    <string name="request_failed">Problem occurred, please check your connection</string>
     <string name="no_network_connection">No network connection, quotes may be outdated or unavailable</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>

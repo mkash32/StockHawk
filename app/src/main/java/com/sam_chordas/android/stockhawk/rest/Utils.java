@@ -7,6 +7,9 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,5 +112,28 @@ public class Utils {
             = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
     NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
     return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+  }
+
+  public static String parseJsonPrevious(JSONObject json, Context c, ArrayList labels, ArrayList values)
+  {
+    try {
+      String company = json.getJSONObject("meta").getString("Company-Name");
+      JSONArray series = json.getJSONArray("series");
+      for (int i = 0; i < series.length(); i++) {
+        JSONObject seriesObj = series.getJSONObject(i);
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String date = android.text.format.DateFormat.
+                getMediumDateFormat(c).
+                format(format.parse(seriesObj.getString("Date")));
+        labels.add(date);
+        values.add(Float.parseFloat(seriesObj.getString("close")));
+      }
+      return company;
+    } catch (JSONException e) {
+      e.printStackTrace();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }

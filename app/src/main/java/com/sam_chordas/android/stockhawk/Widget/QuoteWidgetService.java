@@ -1,4 +1,4 @@
-package com.sam_chordas.android.stockhawk.service;
+package com.sam_chordas.android.stockhawk.Widget;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;
